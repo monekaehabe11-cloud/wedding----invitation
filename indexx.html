@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>Mariam & Fady - Wedding Invitation</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Cairo:wght@300;500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-weight/6.4.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg-soft-white: #FCFBF9;
+            --blush-pink: #F3E1DC;
+            --blush-dark: #D4B2A7;
+            --text-dark: #3A3532;
+            --text-gold: #C5A059;
+            --font-serif: 'Cinzel', serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --font-arabic: 'Cairo', sans-serif;
+            --font-script: 'Alex Brush', cursive;
+        }
+
+        /* حماية النصوص الإنجليزية من الانقلاب أو الترجمة التلقائية */
+        .notranslate, [translate="no"], .hero-title, .hero-subtitle, .hero-date, .detail-label, .time-num, .time-label, .gate-monogram, .enter-btn {
+            translate: no !important;
+            direction: ltr !important;
+            unicode-bidi: isolate !important;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-soft-white);
+            color: var(--text-dark);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- بوابة الدخول الملكية (Royal Gate) --- */
+        #royalGateOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            overflow: hidden;
+            pointer-events: auto;
+        }
+
+        /* ضلفتين الباب */
+        .gate-door {
+            width: 50vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1613 0%, #2c241e 100%);
+            position: absolute;
+            top: 0;
+            transition: transform 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        }
+
+        .gate-left {
+            left: 0;
+            justify-content: flex-end;
+            border-right: 2px solid var(--text-gold);
+        }
+
+        .gate-right {
+            right: 0;
+            justify-content: flex-start;
+            border-left: 2px solid var(--text-gold);
+        }
+
+        /* نقوش وزخارف الأبواب الملكية */
+        .gate-left::before, .gate-right::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            width: calc(100% - 40px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+        }
+        .gate-left::before { right: 20px; border-radius: 20px 0 0 20px; }
+        .gate-right::before { left: 20px; border-radius: 0 20px 20px 0; }
+
+        /* السنتر والزرار الخاص بالفتح */
+        .gate-center-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            text-align: center;
+            width: 100%;
+            transition: all 0.5s ease;
+        }
+
+        .gate-monogram {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--text-gold);
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            animation: pulse 2.5s infinite;
+        }
+
+        .enter-btn {
+            background: transparent;
+            color: var(--text-gold);
+            border: 1px solid var(--text-gold);
+            padding: 14px 35px;
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            background-color: rgba(26, 22, 19, 0.8);
+        }
+
+        .enter-btn:hover {
+            background: var(--text-gold);
+            color: #1a1613;
+            box-shadow: 0 0 25px rgba(197, 160, 89, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* أنيميشن اختفاء الباب وتفتيحه */
+        .open-gate .gate-left {
+            transform: translateX(-100%);
+        }
+        .open-gate .gate-right {
+            transform: translateX(100%);
+        }
+        .open-gate .gate-center-content {
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.03); opacity: 1; text-shadow: 0 2px 20px rgba(197, 160, 89, 0.6); }
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+
+        /* Ambient Floral Background Accents */
+        .floral-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            background-image: 
+                url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=500&auto=format&fit=crop'), 
+                radial-gradient(circle at 10% 10%, var(--blush-pink) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, var(--blush-pink) 0%, transparent 40%);
+            background-blend-mode: overlay;
+        }
+
+        .container {
+            max-width: 500px; 
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            background: rgba(252, 251, 249, 0.85);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(0,0,0,0.02);
+            min-height: 100vh;
+        }
+
+        /* Audio Control Button */
+        .audio-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: white;
+            border: 1px solid var(--blush-pink);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-gold);
+            margin-bottom: 25px;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .hero-script {
+            font-family: var(--font-script);
+            font-size: 3.5rem;
+            color: var(--text-gold);
+            display: block;
+            margin: -10px 0;
+        }
+
+        .hero-date {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            margin-top: 30px;
+            border-top: 1px solid var(--blush-dark);
+            border-bottom: 1px solid var(--blush-dark);
+            padding: 10px 25px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            font-family: var(--font-serif);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+            color: var(--blush-dark);
+        }
+
+        /* Instagram Photo Feed Section */
+        .photo-feed {
+            padding: 0 25px;
+        }
+
+        .feed-item {
+            margin-bottom: 35px;
+            position: relative;
+            background: #fff;
+            padding: 12px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(212, 178, 167, 0.15);
+        }
+
+        .feed-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Elegant Divider */
+        .divider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 60px auto;
+            width: 60%;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--blush-dark);
+        }
+
+        .divider i {
+            padding: 0 15px;
+            color: var(--text-gold);
+            font-size: 0.9rem;
+        }
+
+        /* Details Section */
+        .details-section {
+            padding: 0 30px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .detail-card {
+            margin-bottom: 40px;
+        }
+
+        .detail-label {
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-gold);
+            margin-bottom: 8px;
+        }
+
+        .detail-value {
+            font-size: 1.15rem;
+            font-weight: 400;
+        }
+
+        .detail-value.arabic {
+            font-family: var(--font-arabic);
+            font-weight: 500;
+            font-size: 1.25rem;
+            direction: rtl;
+            margin-top: 5px;
+        }
+
+        /* Countdown Timer */
+        .countdown-container {
+            background: linear-gradient(145deg, #ffffff, #fff7f5);
+            border: 1px solid var(--blush-pink);
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin: 50px 25px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(212, 178, 167, 0.08);
+        }
+
+        .countdown-title {
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .time-box {
+            flex: 1;
+        }
+
+        .time-num {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--blush-dark);
+        }
+
+        /* Action Buttons */
+        .actions {
+            padding: 0 30px 80px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--text-dark);
+            color: var(--bg-soft-white);
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary:hover {
+            background-color: #25211f;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-dark);
+            border: 1px solid var(--blush-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--blush-pink);
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            font-size: 1rem;
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Desktop Optimization Panel */
+        @media (min-width: 501px) {
+            body {
+                background-color: #EFECE9;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- البوابة الملكية الترحيبية -->
+    <div id="royalGateOverlay">
+        <div class="gate-door gate-left"></div>
+        <div class="gate-center-content">
+            <div class="gate-monogram" translate="no">M & F</div>
+            <button class="enter-btn" onclick="openRoyalGate()">Open Invitation</button>
+        </div>
+        <div class="gate-door gate-right"></div>
+    </div>
+
+    <div class="floral-bg"></div>
+
+    <button class="audio-btn" id="audioToggle" aria-label="Toggle music">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M11.536 14.01A8.47 8.47 0 0 0 14.026 8a8.47 8.47 0 0 0-2.49-6.01l-.708.707A7.48 7.48 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303z"/>
+            <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.48 5.48 0 0 1 11.025 8a5.48 5.48 0 0 1-1.61 3.89z"/>
+            <path d="M8.707 11.182A4.5 4.5 0 0 0 10.025 8a4.5 4.5 0 0 0-1.318-3.182L8 5.525A3.5 3.5 0 0 1 9.025 8 3.5 3.5 0 0 1 8 10.475z"/>
+            <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/>
+        </svg>
+    </button>
+    
+    <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <div class="container">
+        
+        <section class="hero">
+            <div data-aos="fade-up" data-aos-duration="1500">
+                <p class="hero-subtitle">The Wedding Invitation</p>
+                <h1 class="hero-title">
+                    <span translate="no">Mariam</span><br>
+                    <span class="hero-script">&</span>
+                    <span translate="no">Fady</span>
+                </h1>
+                <p class="hero-date">27 . 09 . 2026</p>
+            </div>
+            <div class="scroll-indicator">Scroll Down</div>
+        </section>
+
+        <section class="photo-feed">
+            <div class="feed-item" data-aos="fade-up" data-aos-duration="1200">
+                <img src="https://i.postimg.cc/y6cXDFH1/Whats-App-Image-2026-06-02-at-12-12-10-AM.jpg" alt="Mariam & Fady Moment 1">
+            </div>
+            
+            <div class="feed-item" data-aos="fade-up" data-aos-duration="1200">
+                <img src="https://i.postimg.cc/nVBYXvJp/Whats-App-Image-2026-06-02-at-12-12-10-AM-(1).jpg" alt="Mariam & Fady Moment 2">
+            </div>
+        </section>
+
+        <div class="divider">
+            <i>♥</i>
+        </div>
+
+        <section class="details-section" data-aos="fade-up" data-aos-duration="1200">
+            <h2 class="section-title">Celebration Details</h2>
+            
+            <div class="detail-card">
+                <p class="detail-label">Date & Day</p>
+                <p class="detail-value">Sunday, 27 / 09 / 2026</p>
+            </div>
+
+            <div class="detail-card">
+                <p class="detail-label">Ceremony ⛪</p>
+                <p class="detail-value">St. Mary Church, Dokki</p>
+                <p class="detail-value arabic">كنيسة العذراء مريم بالدقي</p>
+                <p class="detail-value" style="margin-top: 5px; font-size: 0.9rem; color: var(--blush-dark);">Time: 6:00 PM</p>
+            </div>
+
+            <div class="detail-card">
+                <p class="detail-label">Reception Venue 🏛</p>
+                <p class="detail-value">Qasr El Shouq Hall</p>
+                <p class="detail-value" style="font-size: 1rem; color:#666;">Weapon and Ammunition Club, Salah Salem</p>
+                <p class="detail-value arabic">قاعة قصر الشوق<br>دار الأسلحة والذخيرة - صلاح سالم</p>
+            </div>
+        </section>
+
+        <div class="countdown-container" data-aos="fade-up" data-aos-duration="1200">
+            <p class="countdown-title">Counting down to the big day</p>
+            <div class="timer" id="countdown">
+                <div class="time-box">
+                    <span class="time-num" id="days">00</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-num" id="hours">00</span>
+                    <span class="time-label">Hrs</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-num" id="minutes">00</span>
+                    <span class="time-label">Mins</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-num" id="seconds">00</span>
+                    <span class="time-label">Secs</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="actions" data-aos="fade-up" data-aos-duration="1200">
+            <a href="https://wa.me/201220784066?text=I%20would%20love%20to%20confirm%20my%20attendance%20for%20Mariam%20%26%20Fady's%20wedding!" class="btn btn-primary" target="_blank">
+                Confirm Attendance (RSVP)
+            </a>
+            
+            <a href="https://share.google/8ktzutB4rUXK8Cmk1" class="btn btn-secondary" target="_blank">
+                View Location Map
+            </a>
+        </section>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        function openRoyalGate() {
+            const gate = document.getElementById('royalGateOverlay');
+            gate.classList.add('open-gate');
+            
+            setTimeout(() => {
+                gate.style.display = 'none';
+            }, 1800);
+
+            if (!isPlaying) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    audioBtn.style.opacity = "1";
+                }).catch(e => console.log("Audio play blocked"));
+            }
+        }
+
+        AOS.init({
+            once: true
+        });
+
+        const targetDate = new Date("September 27, 2026 18:00:00").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+
+            if (difference < 0) {
+                clearInterval(timerInterval);
+                document.getElementById("countdown").innerHTML = "<p style='font-family:var(--font-serif); color:var(--text-gold);' translate='no'>The Celebration Has Begun!</p>";
+            }
+        }, 1000);
+
+        const audio = document.getElementById("bgMusic");
+        const audioBtn = document.getElementById("audioToggle");
+        let isPlaying = false;
+
+        audioBtn.addEventListener("click", () => {
+            if (isPlaying) {
+                audio.pause();
+                audioBtn.style.opacity = "0.6";
+            } else {
+                audio.play().catch(e => console.log("Audio playback error"));
+                audioBtn.style.opacity = "1";
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>
